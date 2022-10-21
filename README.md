@@ -42,13 +42,16 @@
 
 ## 2. 프로젝트 구성
 
-### 2.1 시스템 아키텍처
+### 2.2 기능 리스트
+<img src=".PNG"/>
+
+### 2.2 시스템 아키텍처
 <img src="system_arch.PNG"/>
 
-### 2.2 ERD
+### 2.3 ERD
 <img src="erd.PNG"/>
 
-### 2.3 서비스 아키텍처
+### 2.4 서비스 아키텍처
 <img src="service_arch.PNG"/>
 
 ## 3. 프로젝트 결과
