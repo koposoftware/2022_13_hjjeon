@@ -67,5 +67,4 @@
 | | Framework - spring,react,django|
 |자격증| 2021년 정보처리기사 |
 || 2021년 SQLD |
-|오픽|  OPIC IM2|
 
