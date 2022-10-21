@@ -47,6 +47,11 @@
 ### 2.3 서비스 아키텍처
 <img src="service_arch.PNG"/>
 
+## 3. 프로젝트 결과
+
+### 3.1 발표PPT
+
+### 3.2 시연 영상
 
 
 |이름 |전형진|<img src=".png" width="200" height="200"/>|
