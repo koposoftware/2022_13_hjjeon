@@ -35,7 +35,11 @@
 ### 2.1 시스템 아키텍처
 <img src="system_arch.PNG"/>
 
+### 2.2 ERD
+<img src="erd.PNG"/>
 
+### 2.3 서비스 아키텍처
+<img src="servie_arch.PNG"/>
 
 
 
