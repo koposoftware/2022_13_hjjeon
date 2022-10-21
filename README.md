@@ -2,6 +2,11 @@
 
 [**하나랜드 깃허브 홈페이지**](https://koposoftware.github.io/2022_13_hjjeon/)
 
+## 1. 프로젝트 소개
+
+### 1.1 프로젝트 개요
+
+![image]("서비스소개")
 
 |이름 |전형진|<img src="myphoto.png" width="200" height="200"/>|
 |:---:|:---:|:---:| 
