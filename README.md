@@ -21,7 +21,7 @@
 ### 1.3 프로젝트 기대효과
 <img src="expected_effect.PNG"/>
 
-### 1.3 개발 환경 
+### 1.4 개발 환경 
 
 ```
 - OS : macOS Monterey
