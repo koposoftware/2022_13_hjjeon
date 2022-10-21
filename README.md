@@ -18,6 +18,15 @@
 
 2) 대학생, 회사원, 엄마, 아빠 누구나 손 쉽게 부동산에 투자하고, 건물수익에 대한 주권을 갖고 우리가 사는 도시 그리고 자산에 대한 관여도 상승 목표
 
+### 1.3 개발 환경 
+
+```
+- OS : macOS Monterey
+- Framework : Spring, React
+- Server : tomcat9
+- Tool : Eclipse, Sql Developer, Visual Studio Code, Github
+- DBMS : Oracle DBMS
+```
 
 |이름 |전형진|<img src=".png" width="200" height="200"/>|
 |:---:|:---:|:---:| 
