@@ -6,7 +6,7 @@
 
 ### 1.1 프로젝트 개요
 
-![image]("service_intro.PNG")
+<img src="service_intro.png" width="200" height="200"/>|
 
 |이름 |전형진|<img src=".png" width="200" height="200"/>|
 |:---:|:---:|:---:| 
