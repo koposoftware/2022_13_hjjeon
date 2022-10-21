@@ -59,7 +59,7 @@
 
 ## 4. 자기소개
 
-|이름 |전형진|<img src="profile.jpg" width="200" height="200"/>|
+|이름 |전형진|<img src="profile.jpg" width="100" height="150"/>|
 |:---:|:---:|:---:| 
 |연락처 |gudwls970412@gmail.com|
 |skill set| Language & Tools - python,java,javascript,html,css|
