@@ -49,7 +49,7 @@
 <img src="system_arch.PNG"/>
 
 ### 2.3 ERD
-<img src="erd.PNG"/>
+<img src="ERD.PNG"/>
 
 ### 2.4 서비스 아키텍처
 <img src="service_arch.PNG"/>
