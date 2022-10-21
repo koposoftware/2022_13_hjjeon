@@ -55,7 +55,7 @@
 <img src="service_arch.PNG"/>
 
 ### 2.5 사용기술
-<img src="skill.png"/>
+<img src="skill.PNG"/>
 
 ## 3. 프로젝트 결과
 
