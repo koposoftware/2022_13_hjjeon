@@ -54,6 +54,9 @@
 ### 2.4 서비스 아키텍처
 <img src="service_arch.PNG"/>
 
+### 2.5 사용기술
+<img src="skill.png"/>
+
 ## 3. 프로젝트 결과
 
 ### 3.1 발표PPT
