@@ -6,9 +6,9 @@
 
 ### 1.1 프로젝트 개요
 
-![image]("서비스소개")
+![image]("service_intro")
 
-|이름 |전형진|<img src="myphoto.png" width="200" height="200"/>|
+|이름 |전형진|<img src=".png" width="200" height="200"/>|
 |:---:|:---:|:---:| 
 |연락처 |2260341017(@)kopo.ac.kr|
 |skill set| Frontend - HTML, CSS, Javascript|
