@@ -43,7 +43,7 @@
 ## 2. 프로젝트 구성
 
 ### 2.2 기능 리스트
-<img src=".PNG"/>
+<img src="function_list.PNG"/>
 
 ### 2.2 시스템 아키텍처
 <img src="system_arch.PNG"/>
