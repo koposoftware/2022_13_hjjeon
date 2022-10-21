@@ -57,12 +57,14 @@
 
 ### 3.2 시연 영상
 
+## 4. 자기소개
 
 |이름 |전형진|<img src=".png" width="200" height="200"/>|
 |:---:|:---:|:---:| 
 |연락처 |2260341017(@)kopo.ac.kr|
-|skill set| Frontend - HTML, CSS, Javascript|
-| | Backend - Python, Djago|
+|skill set| Language & Tools - python,java,javascript,html,css|
+| | Database - oracle|
+| | Framework - spring,react,django|
 |자격증| 2021년 정보처리기사 |
 || 2021년 SQLD |
 |오픽|  OPIC IM2|
