@@ -5,8 +5,7 @@
 ## 1. 프로젝트 소개
 
 ### 1.1 프로젝트 개요
-[프로젝트 제안서<img src="intro.png"/>](/intro.pptx)<br>
-<img src="service_intro.PNG"/>
+[프로젝트 제안서<img src="service_intro.png"/>](/intro.pptx)<br>
 
 - 부동산조각투자: 다수의 투자자가 디지털화한 부동산의 유동화 수익증권(DABS)을 투자·거래하는 투자 플랫폼
 
