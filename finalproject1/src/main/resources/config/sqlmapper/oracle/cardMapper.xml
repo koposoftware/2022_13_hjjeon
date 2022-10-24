@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="card.dao.cardDAO">
+
+		<select id="selectCardList" parameterType="int" resultType="hashmap">
+				select * from card where customer_id_num2 =#{customerIdNum2}
+		</select>
+		
+		<select id="selectCardInfoList" parameterType="hashmap" resultType="hashmap">
+			select a.*,b.*,a.location_name || b.building_address as building_location,trunc(((a.payment_cnt/(select count(*) from CARD_USAGE_LIST where card_no in(#{cardNum1},#{cardNum2}) and payment_date > add_months(current_date,-3)))*100),2) as payment_cnt_per 
+			,trunc(((a.sum_payment_amount/(select sum(payment_amount) from CARD_USAGE_LIST where card_no in(#{cardNum1},#{cardNum2}) and payment_date > add_months(current_date,-3)))*100),2) as payment_amount_per
+			from (select a.*,b.location_name from 
+			(select location_code,count(*) as payment_cnt,sum(payment_amount) as sum_payment_amount 
+			from CARD_USAGE_LIST where card_no in(#{cardNum1},#{cardNum2}) and card_no in(#{cardNum1},#{cardNum2}) and payment_date > add_months(current_date,-3) group by location_code) a inner join location b on a.location_code = b.location_code order by sum_payment_amount desc) a
+			left outer join (select a.property_no,a.fid,a.building_no,a.point_head1,a.point_head2,a.point_head3,b.building_name,b.image_name1,b.image_name2,b.image_name3,b.building_address,b.location_code 
+			from property a inner join building b on a.building_no = b.building_no where a.mbti_type != '1') b on a.location_code = b.location_code
+
+		</select>
+		
+		<select id="selectBuildingPlus" parameterType="string" resultType="hashmap">
+			select a.building_name,a.image_name1,a.location_code,a.building_no,b.property_no from building a inner join property b on a.building_no = b.building_no where location_code = #{locationCode}
+		</select>
+	
+</mapper>                            
+
+
+   
+

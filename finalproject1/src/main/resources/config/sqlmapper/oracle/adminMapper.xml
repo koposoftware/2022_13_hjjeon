@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="admin.dao.adminDAO">
+		<select id="getPropertyInfo" resultType="hashmap">
+			select a.property_no,a.fid,b.* from (property) a inner join 
+			(select a.*,b.building_name,b.image_name1,round(a.sum_order_price*0.002,2)*2 as earning_amount from 
+			(select building_no,round(sum(order_price/0.998),-1) as sum_order_price,to_char(order_date,'yyyy-mm-dd') as order_date,sum(dabs_amount) as sum_dabs_amount from orders 
+			where order_type in ('매도') and order_state = 'S' 
+			group by to_char(order_date,'yyyy-mm-dd'),building_no having to_char(order_date,'yyyy-mm-dd') = to_char(current_date,'yyyy-mm-dd')) a inner join
+			(select building_no,building_name,image_name1 from building) b on a.building_no = b.building_no) b on a.building_no = b.building_no
+		</select>
+		
+		<select id="getPropertyAnalyist" parameterType="string" resultType="hashmap">
+			select rownum,a.* from (select property_no,sum(dabs_amount) as sum_dabs_amount,round(sum(order_price/0.998),-1) as sum_order_price,trunc(sum(order_price)*0.002,2)*2 as earning_price,to_char(order_date,'MM-DD') as order_date from orders 
+			where order_type in('매도') and order_state = 'S' group by property_no,to_char(order_date,'MM-DD') 
+			having property_no = #{propertyNo} order by order_date desc) a where rownum &lt; 9
+		</select> 
+		
+		<select id="getPropertyAnalystWeek" parameterType="string" resultType="hashmap">
+			select sum(sum_dabs_amount) as sum_dabs_amount ,round(sum(sum_order_price/0.998),-1) as sum_order_price,sum(earning_price)*2 as earning_price from(
+			select rownum,a.* from (select property_no,sum(dabs_amount) as sum_dabs_amount,sum(order_price) as sum_order_price,trunc(sum(order_price)*0.002,2) as earning_price,to_char(order_date,'MM-DD') as order_date from orders 
+			where order_type in('매도') and order_state = 'S' group by property_no,to_char(order_date,'MM-DD') 
+			having property_no = #{propertyNo} order by order_date desc) a where rownum &lt; 9)
+		</select>
+		
+		<select id="getOrdersRecent" parameterType="hashmap" resultType="hashmap">
+			select rownum,a.* from (select rownum as rn,a.* from (select b.building_name,a.customer_id,a.order_type,a.dabs_amount,a.order_price,
+			case when a.order_state = 'S' THEN '성공'
+			     when a.order_state = 'W' then '대기'
+			     end as order_state
+			,to_char(a.order_date,'YYYY-MM-DD HH24:MI:SS') as order_date from orders a inner join building b on a.building_no = b.building_no 
+			where a.order_type in('매수','매도')
+			order by order_no desc) a where  <![CDATA[ rownum <= #{endNum} ]]>) a where  <![CDATA[ a.rn > #{startNum} ]]>
+		</select>
+		
+		<select id="getVoteProcessDetail"  parameterType="hashmap" resultType="hashmap">
+			select rownum,a.* from (select rownum as rn,a.* from (select  b.building_name,case when a.agree_disagree_state = 'A' then '찬성'
+             when a.agree_disagree_state = 'D' then '반대'
+             end as agree_disagree_state
+			,a.dabs_amount,to_char(a.vote_date,'YYYY-MM-DD HH24:MI:SS') as vote_date from disposal_process a inner join building b 
+            on substr(a.property_no,1,4) = b.building_no) a where  <![CDATA[ rownum <= #{endNum} ]]>) a where <![CDATA[ a.rn > #{startNum} ]]>
+		</select>
+		
+		<select id="getCustomerList" resultType="hashmap">
+			select customer_id,customer_name,phone_number,email,customer_address, case when mbti_type is null then '-' else mbti_type end as mbti_type from customer
+		</select>
+		
+		<select id="selectSubscriptionProperty"  resultType="hashmap">
+			select a.*,b.location_name||' '||a.building_address as building_full_name from (select b.location_code,b.building_address,b.building_name,a.property_no,a.competition_period,a.competition_date,a.competition_price,a.total_dabs,a.point_head1,a.point_head2,a.point_head3,
+			(a.total_dabs - (select sum(dabs_amount) from subscription_process group by property_no having property_no = 10030000)) as subscription_remanet, ((select sum(dabs_amount) from subscription_process group by property_no having property_no = 10030000)/a.total_dabs)*100 as subscription_rate,b.image_name1,b.image_name2,b.image_name3 
+			from property a inner join building b on a.building_no = b.building_no where a.subscription_state = 'P' and a.property_no = 10030000) a inner join location b on a.location_code = b.location_code
+		</select>
+		
+		<insert id="insertBuilding" parameterType="hashmap">
+			insert into building(building_no,building_name,scale,location_code,building_address,building_purpose,total_floor_area,coverage_ratio,floor_area_ratio
+			,land_purpose,land_area,build_date,image_name1,image_name2,image_name3,map)
+			 values(#{buildingNo},#{buildingName},#{scale},#{locationCode},#{buildingAddress},#{buildingPurpose},#{totalFloorArea},#{coverageRatio}
+			 ,#{floorAreaRatio},#{landPurpose},#{landArea},#{buildDate},#{imageName1},#{imageName2},#{imageName3},#{map})
+		</insert>
+		
+		<insert id="insertProperty" parameterType="hashmap">
+			insert into property(property_no,property_name,building_no,property_area,property_land_area,total_dabs,point_head1,point_head2,point_head3
+			,point_detail1,point_detail2,point_detail3,yield,yieldDate,fid,avls,competition_period,competition_date,competition_price,disposal_state
+			,subscription_state,mbti_type)
+			values(#{propertyNo},#{propertyName},#{buildingNo},#{propertyArea},#{propertyLandArea},#{dabsCount},#{pointHead1},#{pointHead2},#{pointHead3}
+			,#{pointDetail1},#{pointDetail2},#{pointDetail3},#{yield},#{yieldDate},#{fid},#{competitionPrice}*#{dabsCount},#{competitionPeriod},#{competitionDate},#{competitionPrice},#{disposalState}
+			,#{subscriptionState},#{mbtiType})
+		</insert>
+		
+		<insert id="insertTenant" parameterType="hashmap">
+		insert into tenant(building_no,property_no,tenant_name,BUSINESS,CONTRACT)
+		values(#{buildingNo},#{propertyNo},#{tenantName},#{business},#{contract})
+		</insert>
+		
+		<update id="updateImageName" parameterType="hashmap">
+			update building set image_name1 = #{imageName1}, image_name2 = #{imageName2}, image_name3 = #{imageName3} where building_no = #{buildingNo}
+		</update>
+		
+		<select id="getMbtiRate" resultType="hashmap">
+			select case when mbti_type is null then '미정' else mbti_type end as mbti_type
+			,round(count(*)/(select count(*) from customer)*100,1) as mbti_rate from customer group by mbti_type
+		</select>
+		
+		<select id="getAllProperty" resultType="hashmap">
+			select b.building_name,a.* from property a inner join building b on a.building_no = b.building_no
+		</select>
+		
+		<update id="updateDisposal"  parameterType="hashmap">
+			update property set disposal_state = 'P' ,pay_date = #{payDate}, expect_disposal_price = #{disposalPrice},disposal_period=#{disposalPeriod1} ||'~'||#{disposalPeriod2} where property_no = #{propertyNo}
+		</update>
+		  
+</mapper>                        
+                   
+        

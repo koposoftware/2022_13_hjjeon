@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="disposal.dao.disposalDAO">
+ 	
+ 	<select id="selectDisposalProperty" resultType="hashmap">
+ 		select a.*,b.building_name,b.image_name1,b.image_name2,b.image_name3 from property a inner join building b on a.building_no = b.building_no where a.disposal_state = 'P'
+ 	</select>
+ 	
+ 	<select id="selectVoteProcess" parameterType="string" resultType="hashmap">
+ 		select b.sum_dabs_amount/a.total_dabs*100 as vote_process,b.sum_dabs_amount,a.total_dabs from property a inner join (select property_no,sum(dabs_amount) as sum_dabs_amount from disposal_process group by property_no) b
+		on a.property_no = b.property_no where a.property_no=#{propertyNo}
+ 	</select>
+ 	
+ 	<select id="selectDabsAmountByUserId" parameterType="string" resultType="hashmap">
+ 		select a.* from (select count(dabs_no) as dabs_amount,property_no  from dabs a where owner=#{userId} group by property_no) a
+		inner join (select property_no from property where disposal_state = 'P') b on a.property_no = b.property_no
+ 	</select> 
+ 	
+	<insert id="insertVote" parameterType="string">
+		insert into disposal_process(property_no,agree_disagree_state,dabs_amount,customer_id,vote_date) 
+		values(#{propertyNo},#{agreeDisagreeState},#{dabsAmount},#{userId},sysdate)
+	</insert> 	 
+	
+	<select id="selectCompleteDisposal" resultType="hashmap">
+			select a.building_name,a.location_full_name,b.* from (select  a.building_name,a.building_no,a.location_code,b.location_name||' '||a.building_address as location_full_name from building a inner join location b on a.location_code = b.location_code) a inner join (select b.building_no,a.property_no,to_char(to_date(a.disposal_date,'YYYY-MM-DD'),'YYYY-MM-DD') as disposal_date,a.disposal_price as disposal_price,b.competition_period,b.competition_date,b.total_dabs*b.competition_price as total_competitom_price, (a.disposal_price-b.total_dabs*b.competition_price)/b.total_dabs as earning_price,
+			(a.disposal_price-b.total_dabs*b.competition_price)/(b.total_dabs*b.competition_price)as earning_rate from COMPLETE_DISPOSAL a inner join property b on a.property_no = b.property_no where b.disposal_state = 'C') b on a.building_no = b.building_no
+	</select>
+	   
+	   <select id="selectVoteState" parameterType="string" resultType="hashmap">
+	   		select agree_disagree_state,sum(dabs_amount) as dabs_amount from disposal_process where property_no=10020000 group by agree_disagree_state
+	   </select>
+	   
+</mapper>      

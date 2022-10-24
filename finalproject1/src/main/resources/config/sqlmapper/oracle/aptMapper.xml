@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="apt.dao.aptDAO">
+	<select id="getAptPrice1" parameterType="string" resultType="hashmap">
+		select b.location_name,a.location_code,a.research_Date,a.point,a.item 
+            from( select location_code,substr(research_date,1,7) research_date,round(avg(point),2) point,item from apt_price 
+            group by substr(research_date,1,7),location_code,item order by location_code) a, location b 
+            where a.location_code = b.location_code and (research_date like '%06') and location_name=#{location}
+	</select>
+	
+	<select id="getAptPrice2" parameterType="string" resultType="hashmap">
+			select b.location_name,a.location_code,a.research_Date,a.point,a.item 
+            from( select location_code,substr(research_date,1,7) research_date,round(avg(point),2) point,item from apt_price 
+            group by substr(research_date,1,7),location_code,item order by location_code) a, location b 
+            where a.location_code = b.location_code and research_date > '2017.07' and (research_date like '%06' or research_date like '%12') and location_name=#{location}
+	</select>
+	
+	<select id="getAptPrice3" parameterType="string" resultType="hashmap">
+		select b.location_name,a.location_code,a.research_Date,a.point,a.item 
+            from( select location_code,substr(research_date,1,7) research_date,round(avg(point),2) point,item from apt_price 
+            group by substr(research_date,1,7),location_code,item order by location_code) a, location b 
+            where a.location_code = b.location_code and research_date > '2019.05' and (research_date like '%06' or research_date like '%02' or research_date like '%10') and location_name=#{location}
+	</select>
+</mapper>

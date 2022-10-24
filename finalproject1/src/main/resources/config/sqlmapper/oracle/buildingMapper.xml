@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="building.dao.buildingDAO">
+		
+		<resultMap type="kr.ac.kopo.building.vo.BuildingVO" id="buildingMap">
+			<result column="building_name" property="buildingName"/>
+			<result column="scale" property="scale"/>
+			<result column="location_code" property="locationCode"/>
+			<result column="building_address" property="buildingAddress"/>
+			<result column="building_purpose" property="buildingPurpose"/>
+			<result column="total_floor_area" property="totalFloorArea"/>
+			<result column="coverage_ratio" property="coverageRatio"/>
+			<result column="floor_area_ratio" property="floorAreaRatio"/>
+			<result column="land_purpose" property="landPurpose"/>
+			<result column="land_area" property="landArea"/>
+			<result column="build_date" property="buildDate"/>
+			<result column="image_name1" property="imageName1"/>
+			<result column="image_name2" property="imageName2"/>
+			<result column="image_name3" property="imageName3"/> 
+			<result column="map" property="map"/> 
+		</resultMap>
+		
+		<resultMap type="kr.ac.kopo.property.vo.PropertyVO" id="propertyMap">
+			<result column="property_name" property="propertyName"/>
+			<result column="property_area" property="propertyArea"/>
+			<result column="property_land_area" property="propertyLandArea"/>
+			<result column="total_dabs" property="totalDABS"/>
+			<result column="point_head1" property="pointHead1"/>
+			<result column="point_head2" property="pointHead2"/>
+			<result column="point_head3" property="pointHead3"/>
+			<result column="point_detail1" property="pointDetail1"/>
+			<result column="point_detail2" property="pointDetail2"/>
+			<result column="point_detail3" property="pointDetail3"/>
+			<result column="yield" property="yield"/>
+			<result column="fid" property="fid"/>
+			<result column="avls" property="avls"/>
+			<result column="acml_tr_pbmn" property="acmlTRPBMN"/>
+			<result column="acml_vol" property="acmlVOL"/>
+			<result column="competition_date" property="competitionDate"/>
+			<result column="total_dabs" property="totalDabs"/>
+		</resultMap>
+		
+		<resultMap type="kr.ac.kopo.tenant.vo.TenantVO" id="tenantMap">
+			<result column="tenant_name" property="tenantName"/>
+			<result column="business" property="business"/>
+			<result column="contract" property="contract"/>
+		</resultMap>
+		
+		<select id="selectByBuildingNo" parameterType="int" resultMap="buildingMap">
+			select * from building where building_no = #{buildingNo}
+		</select>
+		
+		<select id="selectByPropertyNo" parameterType="int" resultMap="propertyMap">
+			select * from property where property_no = #{propertyNo} and building_no = #{buildingNo}
+		</select>
+		
+		<select id="selectByTenantNo" parameterType="int" resultMap="tenantMap">
+				select * from tenant where  property_no = #{propertyNo} and building_no = #{buildingNo}
+		</select>
+		
+		<select id="selectByFid" parameterType="int" resultMap="propertyMap">
+			select * from property where fid = #{fid}
+		</select>
+		
+		<select id="selectIndexBuilding" resultType="hashmap">
+			select a.building_name,a.building_no,b.property_no from building a inner join property b on a.building_no = b.building_no where disposal_state = 'N' and subscription_state = 'N'
+		</select>
+		   
+		   <select id="selectAcml" parameterType="string"	 resultType="hashmap">
+		   		select a.*,b.building_name,b.image_name1,round(a.sum_order_price*0.998,2) as earning_amount from 
+			(select building_no,round(sum(order_price/0.998),-1) as sum_order_price,to_char(order_date,'yyyy-mm-dd') as order_date,sum(dabs_amount) as sum_dabs_amount,property_no from orders 
+			where order_type in ('매도') and order_state = 'S' 
+			group by to_char(order_date,'yyyy-mm-dd'),building_no,property_no having to_char(order_date,'yyyy-mm-dd') = to_char(current_date,'yyyy-mm-dd')) a inner join
+			(select building_no,building_name,image_name1 from building) b on a.building_no = b.building_no where property_no = #{propertyNo}
+		   </select>
+		
+</mapper>   

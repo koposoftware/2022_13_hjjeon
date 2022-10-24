@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="member.dao.memberDAO">
+
+	<resultMap type="kr.ac.kopo.member.vo.MemberVO" id="memberMap">
+		<result column="customer_id" property="id"/>
+		<result column="customer_password" property="password"/>
+		<result column="customer_name" property="name"/>
+		<result column="phone_number" property="number"/>
+		<result column="email" property="email"/>
+		<result column="customer_address" property="address"/>
+		<result column="register_date" property="regDate"/>
+		<result column="customer_id_number1" property="idNum1"/>
+		<result column="customer_id_number1" property="idNum2"/>
+	</resultMap>
+
+	<select id="selectUser" parameterType="kr.ac.kopo.member.vo.MemberVO" resultMap="memberMap">
+		select * from customer where customer_id=#{id} and customer_password=#{password}
+	</select>
+	
+	<insert id="insertUser"  parameterType="kr.ac.kopo.member.vo.MemberVO">
+		INSERT INTO CUSTOMER(CUSTOMER_ID,CUSTOMER_ID_NUMBER1,CUSTOMER_ID_NUMBER2,CUSTOMER_PASSWORD,CUSTOMER_NAME,PHONE_NUMBER,EMAIL,CUSTOMER_ADDRESS)
+		values(#{id},#{idNum1},#{idNum2},#{password},#{name},#{number},#{email},#{address})
+	</insert>
+	
+	
+	<select id="selectCustomerIdNum2" parameterType="string" resultType="int">
+		select customer_id_number2 from customer where customer_id = #{customerId}
+	</select>
+</mapper>

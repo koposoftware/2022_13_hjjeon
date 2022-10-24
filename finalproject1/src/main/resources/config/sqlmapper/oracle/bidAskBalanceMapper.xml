@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="bidAskBalance.dao.bidAskBalanceDAO">
+	
+	<resultMap type="kr.ac.kopo.bidaskbalance.vo.BidAskBalanceVO" id="bidAskBalanceMap">
+		<result column="property_no" property="propertyNo"/>
+		<result column="bid_ask_id" property="bidAskId"/>
+		<result column="balance" property="balance"/>
+	</resultMap>
+
+	<select id="selectByPropertyNo" parameterType="int" resultMap="bidAskBalanceMap">
+		select * from BID_ASK_BALANCE where property_no = #{propertyNo} order by substr(bid_ask_id,0,1),to_number(substr(bid_ask_id,5,2)) asc
+	</select>
+
+</mapper>  

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd
+    http://www.springframework.org/schema/websocket
+    https://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+	<context:component-scan base-package="kr.ac.kopo" />
+		<task:scheduler id="jobScheduler" pool-size="1" />
+	    <task:annotation-driven scheduler="jobScheduler" />
+    <mvc:annotation-driven>
+    	<mvc:message-converters>
+    		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+    			<property name="supportedMediaTypes">
+    				<list>
+    					<value>text/html; charset=UTF-8</value>
+    				</list>
+    			</property>
+    		</bean>
+    		
+
+    		
+    		<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">	
+					<list>
+						<value>text/html; charset=UTF-8</value>
+						<value>application/json; charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+    	</mvc:message-converters>
+    </mvc:annotation-driven>
+    
+	<mvc:default-servlet-handler />
+	<mvc:view-resolvers>
+		<mvc:jsp prefix="/WEB-INF/jsp/" suffix=".jsp" />
+	</mvc:view-resolvers>
+	
+	<!-- oracle 연결  -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+      <property name="url" value="jdbc:oracle:thin:@db202204221314_medium?TNS_ADMIN=/Users/jun/Wallet_DB202204221314"></property>
+      <property name="username" value="admin"></property>
+      <property name="password" value="Hidden970412"></property>
+   </bean>
+	
+	<!-- mybatis session 생성  -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="mapperLocations" value="classpath:config/sqlmapper/oracle/*.xml" />
+		<property name="configLocation" value="classpath:config/mybatis/mybatis-config.xml"></property>
+	</bean>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- <bean id="loginInterceptor" class="kr.ac.kopo.interceptor.LoginInterceptor"></bean>
+	<mvc:interceptors>
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/**/"/>
+			<mvc:exclude-mapping path="/login"/>
+			<mvc:exclude-mapping path="/resources/**"/>
+			<mvc:exclude-mapping path="/board"/>
+			<mvc:exclude-mapping path="/member/register"/>
+			<ref bean="loginInterceptor"/>
+		</mvc:interceptor>
+		
+	</mvc:interceptors>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<task:annotation-driven/> -->
+	 
+
+   <!-- 이메일 인증 관련 빈 등록 -->
+   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+      <property name="host" value="smtp.gmail.com" />
+      <property name="port" value="587" />
+      <property name="username" value="gudwls970412@gmail.com" />
+      <property name="password" value="fsajguuzmcnerxnv" />
+      <property name="javaMailProperties">
+         <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <!-- gmail의 경우 보안문제 업데이트로 인해 SSLSocketFactory를 추가해야 smtp 사용 가능. -->
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+            </props>
+      </property>
+      
+   </bean>
+   
+  <!-- 파일 업로드 -->
+   <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+   </bean> 
+   
+	
+		<bean id="myHandler" class="kr.ac.kopo.socket.EchoHandler" />
+	<websocket:handlers>
+		<websocket:mapping handler="myHandler" path="/alarm" />
+		<websocket:handshake-interceptors>
+	         <bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+	      </websocket:handshake-interceptors>
+		<websocket:sockjs websocket-enabled="true"/>
+	</websocket:handlers>
+   
+</beans>
+  
+
+
+
+  
+
+
+
+

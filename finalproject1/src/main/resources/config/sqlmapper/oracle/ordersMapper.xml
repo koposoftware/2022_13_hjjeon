@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="orders.dao.ordersDAO">
+
+		<resultMap type="kr.ac.kopo.orders.vo.OrdersVO" id="ordersMap">
+				<result column="order_no" property="orderNo"/> 
+				<result column="building_no" property="buildingNo"/>
+				<result column="property_no" property="propertyNo"/>
+				<result column="customer_id" property="customerId"/>
+				<result column="order_type" property="orderType"/>
+				<result column="dabs_amount" property="dabsAmount"/>
+				<result column="order_price" property="orderPrice"/>
+				<result column="order_date" property="orderDate"/>
+				<result column="order_state" property="orderState"/>
+		</resultMap>
+		
+	<select id="selectOrdersRealTime" parameterType="string" resultMap="ordersMap">
+		select to_char(order_date,'HH24:MI:SS') as order_date ,order_price,dabs_amount,order_type from orders where extract(day from order_date) = #{date} and order_state = 'S' and property_no = #{propertyNo} and order_type in ('매수') order by order_date desc
+	</select>
+	<select id="selectOrdersDaily" parameterType="string" resultType="hashmap">
+		select to_char(order_date,'YYYY-MM-DD') as orderDate, round((sum(order_price)/sum(dabs_amount))*1.002,0) as order_price ,sum(dabs_amount) as dabsSum from orders where order_type in ('매도') and order_state = '${orderState}' and property_no = ${propertyNo} and to_char(order_date,'YYYY-MM-DD') <![CDATA[<]]>  '${date}' group by to_char(order_date,'YYYY-MM-DD')  order by to_char(order_date,'YYYY-MM-DD') desc 
+	</select>
+	
+	<select id="selectOrdersPaging" parameterType="string" resultType="hashmap">
+		
+		select a.building_name,b.* from building a inner join
+		(select to_char(rownum),to_char(order_no),to_char(order_date,'YYYY-MM-DD HH24:MI:SS') as orderDate,order_type as ordertype,to_char(building_no) as building_no,to_char(dabs_amount) as dabsamount,to_char(order_price) as orderprice,to_char(present_balance) as presentbalance from
+		(select rownum rn,order_no,order_date,order_type,building_no,dabs_amount,order_price,present_balance 
+		from (select * from orders order by order_no desc) where customer_id = #{customerId} and order_state in('S','N') and<![CDATA[ rownum <= #{endNum} ]]> order by order_no desc) where<![CDATA[ rn > #{startNum} ]]> ) b
+        on a.building_no = b.building_no
+	</select>
+	        
+	                                  
+	   
+	<select id="ordersProcess" statementType="CALLABLE" parameterType="kr.ac.kopo.orders.vo.OrdersVO">
+		{ CALL order_procedure(
+			#{orderType},
+			#{orderPrice},
+			#{dabsAmount},
+			#{customerId},
+			#{buildingNo},
+			#{propertyNo},
+			#{bidAskId}
+			)
+		}
+	</select>
+   
+</mapper>
+
+   

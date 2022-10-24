@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="dabs.dao.dabsDAO">
+		<resultMap type="kr.ac.kopo.dabs.vo.DabsVO" id="dabsMap">
+			<result column="dabs_no" property="dabsNo"/>
+			<result column="property_no" property="propertyNo"/>
+			<result column="owner" property="owner"/>
+			<result column="dabs_price" property="dabsPrice"/>
+		</resultMap>
+		
+		<select id="selectSumDabsPrice" parameterType="string" resultType="hashmap">
+		select a.building_no,a.property_no,a.sumdabsprice,a.countdabsno,a.fid,b.image_name1,b.building_name from
+			(select b.building_no,a.property_no as,sum(a.dabs_price) as sumdabsprice,count(a.dabs_no) as countdabsno,b.fid from dabs a inner join property b on a.property_no = b.property_no
+			where a.owner =#{customerId} and b.subscription_state='N' and b.disposal_state in('N','P')  group by a.property_no,b.fid,b.building_no order by a.property_no) a inner join
+			(select a.building_name,b.property_no,a.image_name1 from building a inner join property b on a.building_no = b.building_no) b on
+			a.property_no = b.property_no
+		</select> 
+		
+		<select id="selectBuildingInfoByPropertyNo" parameterType="string" resultType="hashmap">
+			select a.building_name,to_char(b.property_no) as propertyno from building a inner join property b on a.building_no=b.building_no where property_no = #{propertyNo}  
+		</select>
+		
+		<select id="selectDabsCnt" parameterType="string" resultType="hashmap">
+			select count(*) as dabsCnt from dabs where owner = #{customerId} and property_no = #{propertyNo}
+		</select>
+		    
+</mapper>       
+  
