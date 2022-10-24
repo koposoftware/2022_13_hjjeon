@@ -60,6 +60,7 @@
 ## 3. 프로젝트 결과
 
 ### 3.1 발표PPT
+[프로젝트 발표 PPT <img src="service_intro.PNG"/>](/presentation.ppt)<br>
 
 ### 3.2 시연 영상
 
