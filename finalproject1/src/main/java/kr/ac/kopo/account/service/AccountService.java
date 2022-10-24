@@ -52,8 +52,8 @@ public class AccountService {
 	}
 	
 	public void sendPhoneAuth(String phoneNumber,int randomNumber) {
-		String app_key = "NCSL1HTBAOAXKYVB";
-		String api_secret = "VYJERCL6RT8FYWHBA9M2CD9VUP1XFQHT";
+		String app_key = "NCSL";
+		String api_secret = "VYJER";
 		Message coolms = new Message(app_key, api_secret);
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("to",phoneNumber);
@@ -74,7 +74,7 @@ public class AccountService {
 	
 	public String fileOCR(String fileName) {
 	      String apiURL = "https://n5b230b18f.apigw.ntruss.com/custom/v1/18451/b72c0b7986ea517c9fb0d97f50508485ae141146f50793b1031c2a5c529febf9/general";
-	      String secretKey = "V2dpcEROQkNwRGh1SEpBQVdIY1hnTGRYcFlrZXJ5clE=";
+	      String secretKey = "V2dpcE";
 	      String imageFile = "/Users/jun/Desktop/전형진/코포 데이터분석과/spring/spring-workspace/finalproject1/src/main/webapp/resources/file/"+fileName; // 파일 입력 
 
 	      try {
