@@ -60,9 +60,10 @@
 ## 3. 프로젝트 결과
 
 ### 3.1 발표PPT
+[프로젝트 발표 PPT <img src="main_page.PNG"/>](/presentation.pptx)<br>
 
 ### 3.2 시연 영상
-
+  [프로젝트 발표 영상 <img src="main_page.PNG"/>](https://www.youtube.com/watch?v=YM6tjygDgD4)
 ## 4. 자기소개
 
 |이름 |전형진|<img src="profile.jpg" width="100" height="150"/>|
