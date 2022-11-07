@@ -852,9 +852,7 @@
             $('#prdy_ctrt').on('click', function() {
                 var fids = ['138930', '006220', '046140']
 
-                const APP_KEY = "PStJdMbep93x6HD8z7MDjVDD0B3yHdLfRLK9"
-                const APP_SECRET = "8ueR6wI+CUd+fLJb+Unfrhj6Q/M/O11mQvApP/5ZCfQvyYX40ZgteygyVlxIusxv7wY0dU9foz4hI1T6h0BgBii/8/lxGFPJtOMDAX7dcttJpqXu/pATrXfyhZJOZaetAAC192MD/Q0I2etNWZ+ZycrM4tCTtOL6hoK2+txr4fFzTQdvNgM="
-
+                
                 const headers = {
                     "Content-Type": "application/json",
                     "authorization": 'Bearer ' + ACCESS_TOKEN,
@@ -933,8 +931,7 @@
             $('#yield').on('click', function() {
                 var fids = ['138930', '006220', '046140']
 
-                const APP_KEY = "PStJdMbep93x6HD8z7MDjVDD0B3yHdLfRLK9"
-                const APP_SECRET = "8ueR6wI+CUd+fLJb+Unfrhj6Q/M/O11mQvApP/5ZCfQvyYX40ZgteygyVlxIusxv7wY0dU9foz4hI1T6h0BgBii/8/lxGFPJtOMDAX7dcttJpqXu/pATrXfyhZJOZaetAAC192MD/Q0I2etNWZ+ZycrM4tCTtOL6hoK2+txr4fFzTQdvNgM="
+                
 
                 const headers = {
                     "Content-Type": "application/json",
@@ -1020,8 +1017,7 @@
             $('#avls').on('click', function() {
                 var fids = ['138930', '006220', '046140']
 
-                const APP_KEY = "PStJdMbep93x6HD8z7MDjVDD0B3yHdLfRLK9"
-                const APP_SECRET = "8ueR6wI+CUd+fLJb+Unfrhj6Q/M/O11mQvApP/5ZCfQvyYX40ZgteygyVlxIusxv7wY0dU9foz4hI1T6h0BgBii/8/lxGFPJtOMDAX7dcttJpqXu/pATrXfyhZJOZaetAAC192MD/Q0I2etNWZ+ZycrM4tCTtOL6hoK2+txr4fFzTQdvNgM="
+               
 
                 const headers = {
                     "Content-Type": "application/json",
@@ -1107,8 +1103,7 @@
                 console.log('acml_vol')
                 var fids = ['138930', '006220', '046140']
 
-                const APP_KEY = "PStJdMbep93x6HD8z7MDjVDD0B3yHdLfRLK9"
-                const APP_SECRET = "8ueR6wI+CUd+fLJb+Unfrhj6Q/M/O11mQvApP/5ZCfQvyYX40ZgteygyVlxIusxv7wY0dU9foz4hI1T6h0BgBii/8/lxGFPJtOMDAX7dcttJpqXu/pATrXfyhZJOZaetAAC192MD/Q0I2etNWZ+ZycrM4tCTtOL6hoK2+txr4fFzTQdvNgM="
+                
 
                 const headers = {
                     "Content-Type": "application/json",
